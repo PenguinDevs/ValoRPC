@@ -103,11 +103,13 @@ class IngamePresence(BasePresence):
    def __loop(self, match_id: str, match_mode: str) -> None:
       if match_mode == 'Standard' or match_mode == 'Swiftplay':
          while True:
+            time.sleep(3)
             print_screen = self.vrpc_client.screen_reader.capture_screen()
             if self.vrpc_client.score_reader.debug:
                self.vrpc_client.screen_reader.display_screen(print_screen)
 
             results = self.vrpc_client.screen_reader.score_reader.record_frame(print_screen)
+            print(results)
             scores, timer, state = results
 
             match_refreshed, match_active = self.__get_match_info(match_id)
@@ -115,7 +117,6 @@ class IngamePresence(BasePresence):
             if not match_active:
                break
 
-            print(results)
             if state is None: # Assuming everything else is none in results :p
                continue
 
