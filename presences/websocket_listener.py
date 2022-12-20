@@ -67,7 +67,7 @@ class WebsocketListener():
                data = response['data']
 
                uri_to_presence = self.events_to_presence[response['eventType']]
-               print(response['eventType'], response['uri'])
+               # print(response['eventType'], response['uri'])
                if response['uri'] in uri_to_presence.keys():
                   uri_to_presence[response['uri']].start_with_event_data(data)
 
