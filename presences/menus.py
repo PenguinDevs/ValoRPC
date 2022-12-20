@@ -19,7 +19,9 @@ class MenusPresence(BasePresence):
       if state == 'Setting up Custom Game':
          status['state'] = f'In Party'
       else:
-         queue_type = presence_data['queueId']
+         queue_type =   (presence_data['queueId'] == 'ggteam' and 'escalation') or\
+                        (presence_data['queueId'] == 'onefa' and 'replication') or\
+                        presence_data['queueId']
          status['state'] = f'{queue_type.capitalize()} | In Party'
       status['large_image'] = 'default'
       status['large_text'] = 'ValoRPC'
