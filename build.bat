@@ -1,1 +1,1 @@
-pyinstaller vrpc.py -w --onefile
+pyinstaller vrpc.py --onefile --add-data "assets/val_assets.json;assets"
