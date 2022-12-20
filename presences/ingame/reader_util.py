@@ -1,7 +1,6 @@
 # 쓰레기 코드
 
 import ctypes
-import os
 from datetime import datetime
 import typing as t
 
@@ -13,7 +12,8 @@ from PIL import Image, ImageGrab
 
 from .pixel_list import (buy_phase_bwpixel_list, match_point_bwpixel_list,
                          match_point_ot_pixel_list, round_lost_bwpixel_list,
-                         round_won_bwpixel_list, ot_pixel_list, endgame_pixel_list)
+                         round_won_bwpixel_list, ot_pixel_list, endgame_pixel_list,
+                         clutch_pixel_list)
 
 user32 = ctypes.windll.user32
 screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
@@ -103,9 +103,11 @@ class TopBarReader():
          status = 'round won'
       elif self._check_bwpixel_list(state_crop, round_lost_bwpixel_list, False):
          status = 'round lost'
+      elif self._check_bwpixel_list(state_crop, clutch_pixel_list, True):
+         status = 'clutch'
       elif self._check_bwpixel_list(state_crop, ot_pixel_list, False):
          status = 'overtime'
-      elif self._check_bwpixel_list(state_crop, endgame_pixel_list, True):
+      elif self._check_bwpixel_list(state_crop, endgame_pixel_list, False):
          status = 'endgame'
       else:
          selected_pos = (round(image_size[0]*0.52), round(image_size[1]*0.08))
@@ -336,15 +338,15 @@ class ScreenReader():
       # screen_size = (image.width, image.height)
       # print_screen = image.crop(box=(screen_size[0]*0.4, 0, screen_size[0]*0.6, screen_size[0]*0.15))
 
-      # print_screen = Image.open('captures/capture9.png')
+      # print_screen = Image.open('captures/capture10.png')
       print_screen = ImageGrab.grab(bbox=(screen_size[0]*0.4, 0, screen_size[0]*0.6, screen_size[0]*0.15))
-      # print_screen.save('captures/capture9.png')
+      # print_screen.save('captures/capture10.png')
 
       return print_screen
 
 
 if __name__ == '__main__':
-   score_reader = TopBarReader(False, True)
+   score_reader = TopBarReader(False, True, 'Tesseract-OCR/tesseract.exe')
    screen_reader = ScreenReader(score_reader)
 
    # from multiprocessing import Process
