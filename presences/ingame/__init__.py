@@ -30,7 +30,7 @@ class IngamePresence(BasePresence):
       self._register_match_id(match_details['MatchID'], 'ingame')
 
       _, mode = self.vrpc_client.assets_manager.get_mode_from_url(match_details['ModeID'])
-      self.__loop(match_id, mode['name'])
+      self.__loop(match_details['MatchID'], mode['name'])
 
    def update_standard_presence(self, results: t.Tuple[t.Tuple[int, int], t.Tuple[int, int], str]) -> None:
       scores, times, state = results
@@ -42,15 +42,15 @@ class IngamePresence(BasePresence):
       if state == 'in progress':
          state = 'Round in Progress'
       elif state == 'buy phase' or state == 'match point' or state == 'overtime' or state == 'endgame':
-         state = 'Buy Phase Intermission'
-      elif state == 'round won' or state == 'round lost':
+         state = 'Buy Phase'
+      elif state == 'round won' or state == 'round lost' or state == 'clutch':
          state = 'Round Intermission'
       elif state == 'spike planted':
          state = 'Spike Planted'
 
       party_info = self.get_party_info()
 
-      status['details'] = f'Playing {self.match_info["mode"]["name"]}{self.match_info["provisioning"]} | {self.match_info["agent"]["name"]} | {self.match_info["map"]["name"]}'
+      status['details'] = f'Playing {self.match_info["provisioning"]}{self.match_info["game_type"]} | {self.match_info["agent"]["name"]} | {self.match_info["map"]["name"]}'
       status['state'] = f'{b_score} - {r_score} | {state} | In Party'
       status['large_image'] = self.match_info['map_uuid']
       status['large_text'] = self.match_info['map']['name']
@@ -71,13 +71,16 @@ class IngamePresence(BasePresence):
 
       self.vrpc_client.presence.update(status)
 
-   def __get_match_info(self, match_id: str = None) -> t.Tuple[bool, bool]:
+   def __get_match_info(self, initial_match_id: str) -> t.Tuple[bool, bool]:
       if (self.match_info == {}) or (time.time() - self.match_details_last_fetched) > 30:
          self.match_details_last_fetched = time.time()
 
          try:
-            match_details = self.vrpc_client.riot_client.coregame_fetch_match(match_id)
+            match_details = self.vrpc_client.riot_client.coregame_fetch_match()
          except PhaseError:
+            return False, False
+
+         if initial_match_id != match_details['MatchID']:
             return False, False
 
          if match_details:
@@ -91,7 +94,14 @@ class IngamePresence(BasePresence):
                   break
 
             _, self.match_info['mode'] = self.vrpc_client.assets_manager.get_mode_from_url(match_details['ModeID'])
-            self.match_info['provisioning'] = match_details['ProvisioningFlow'] == 'CustomGame' and ' Custom' or ''
+            self.match_info['mode'] = self.match_info['mode']['name']
+            self.match_info['provisioning'] = match_details['ProvisioningFlow'] == 'CustomGame' and 'Custom ' or ''
+            self.match_info['game_type'] = self.match_info['mode']
+            if not match_details['ProvisioningFlow'] == 'CustomGame' and self.match_info['mode'] == 'Standard':
+               if match_details['MatchmakingData']['QueueID'] == 'competitive':
+                  self.match_info['game_type'] = 'Competitive'
+               else:
+                  self.match_info['game_type'] = 'Unrated'
             self.match_info['agent'] = self.vrpc_client.assets_manager.get_asset('agents', local_player['CharacterID'])
             self.match_info['agent_uuid'] = local_player['CharacterID']
             self.match_info['map_uuid'], self.match_info['map'] = self.vrpc_client.assets_manager.get_map_from_url(match_details['MapID'])
@@ -127,7 +137,7 @@ class IngamePresence(BasePresence):
             if secs < 13: # we need time for discord rpc to be updated
                continue
 
-            start, end = self.__get_start_end_from_state(secs, state, round_no, self.match_info['mode']['name'])
+            start, end = self.__get_start_end_from_state(secs, state, round_no, self.match_info['mode'])
 
             self.start = start
 
@@ -152,7 +162,7 @@ class IngamePresence(BasePresence):
                   opponent_score = presence_data['partyOwnerMatchScoreEnemyTeam']
 
                   status = {}
-                  status['details'] = f'Playing {self.match_info["mode"]["name"]}{self.match_info["provisioning"]} | {self.match_info["agent"]["name"]} | {self.match_info["map"]["name"]}'
+                  status['details'] = f'Playing {self.match_info["provisioning"]}{self.match_info["game_type"]} | {self.match_info["agent"]["name"]} | {self.match_info["map"]["name"]}'
                   if my_score < opponent_score:
                      status['state'] = f'{my_score} - {opponent_score} | In Party'
                   elif my_score >= opponent_score:
@@ -176,12 +186,15 @@ class IngamePresence(BasePresence):
                party_info = self.get_party_info()
 
                status = {}
-               status['details'] = f'Playing {self.match_info["mode"]["name"]}{self.match_info["provisioning"]} | {self.match_info["agent"]["name"]} | {self.match_info["map"]["name"]}'
+               if self.match_info["map"]["name"] == 'The Range':
+                  status['details'] = f'Playing {self.match_info["provisioning"]}{self.match_info["game_type"]}'
+               else:
+                  status['details'] = f'Playing {self.match_info["provisioning"]}{self.match_info["game_type"]} | {self.match_info["agent"]["name"]} | {self.match_info["map"]["name"]}'
+                  status['small_image'] = self.match_info['agent_uuid']
+                  status['small_text'] = self.match_info['agent']['name']
                status['state'] = f'In Party'
                status['large_image'] = self.match_info['map_uuid']
                status['large_text'] = self.match_info['map']['name']
-               status['small_image'] = self.match_info['agent_uuid']
-               status['small_text'] = self.match_info['agent']['name']
                status['party_size'] = party_info
                status['start'], _ = self.__get_start_end_from_state(0, None, 0, match_mode)
 
@@ -206,7 +219,7 @@ class IngamePresence(BasePresence):
             return get_start_end(0)
          else:
             extra = 0
-            if state == 'round won' or state == 'round lost':
+            if state == 'round won' or state == 'round lost' or state == 'clutch':
                extra = 7
             
             if round_no == 0 or round_no == 12 or round_no == 24:
@@ -224,7 +237,7 @@ class IngamePresence(BasePresence):
             return get_start_end(0)
          else:
             extra = 0
-            if state == 'round won' or state == 'round lost':
+            if state == 'round won' or state == 'round lost' or state == 'clutch':
                extra = 7
             
             if round_no == 4 or round_no == 8:
@@ -240,7 +253,7 @@ class IngamePresence(BasePresence):
             return get_start_end(0)
          else:
             extra = 0
-            if state == 'round won' or state == 'round lost':
+            if state == 'round won' or state == 'round lost' or state == 'clutch':
                extra = 7
             
             if round_no == 4 or round_no == 8:

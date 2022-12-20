@@ -53,7 +53,14 @@ class PregamePresence(BasePresence):
             continue
 
          _, mode = self.vrpc_client.assets_manager.get_mode_from_url(match_details['Mode'])
-         provisioning = match_details['ProvisioningFlowID'] == 'CustomGame' and ' Custom' or ''
+         mode = mode['name']
+         game_type = mode
+         if not match_details['ProvisioningFlowID'] == 'CustomGame' and mode == 'Standard':
+            if match_details['QueueID'] == 'competitive':
+               game_type = 'Competitive'
+            elif match_details['QueueID'] == 'unrated':
+               game_type = 'Unrated'
+         provisioning = match_details['ProvisioningFlowID'] == 'CustomGame' and 'Custom ' or ''
          state = local_player['CharacterSelectionState'] == 'locked' and 'Locked in' or 'Selecting'
          agent = self.vrpc_client.assets_manager.get_asset('agents', local_player['CharacterID'])
          map_uuid, map = self.vrpc_client.assets_manager.get_map_from_url(match_details['MapID'])
@@ -61,7 +68,7 @@ class PregamePresence(BasePresence):
 
          status['start'] = self.start
          status['end'] = self.start + 90
-         status['details'] = f'Agent Select {mode["name"]}{provisioning}'
+         status['details'] = f'Agent Select {provisioning}{game_type}'
          if agent:
             status['state'] = f'{map["name"]} | {state} {agent["name"]} | In Party'
             status['small_text'] = agent['name']
