@@ -1,5 +1,6 @@
 import requests
 import json
+from os import path
 
 EMPTY_ASSETS = {
    'agents': {},
@@ -11,7 +12,7 @@ EMPTY_ASSETS = {
 
 class AssetsManager():
    def __init__(self) -> None:
-      self.assets_dir = 'assets/val_assets.json'
+      self.assets_dir = path.abspath(path.join(path.dirname(__file__), 'val_assets.json')) # 'assets/val_assets.json'
 
       self.assets = EMPTY_ASSETS
       self.read_assets()
@@ -105,5 +106,3 @@ class AssetsManager():
    def get_mode_from_url(self, mode_url: str) -> any:
       uuid = self.get_asset('mode_path_to_uuid', mode_url)
       return uuid, self.get_asset('modes', uuid)
-
-AssetsManager().bulk_download_all_assets()

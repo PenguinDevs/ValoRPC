@@ -104,7 +104,8 @@ class IngamePresence(BasePresence):
       if match_mode == 'Standard' or match_mode == 'Swiftplay':
          while True:
             print_screen = self.vrpc_client.screen_reader.capture_screen()
-            self.vrpc_client.screen_reader.display_screen(print_screen)
+            if self.vrpc_client.score_reader.debug:
+               self.vrpc_client.screen_reader.display_screen(print_screen)
 
             results = self.vrpc_client.screen_reader.score_reader.record_frame(print_screen)
             scores, timer, state = results
