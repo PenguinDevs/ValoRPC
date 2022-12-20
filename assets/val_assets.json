@@ -192,7 +192,7 @@
         },
         "e2dc3878-4fe5-d132-28f8-3d8c259efcc6": {
             "uuid": "e2dc3878-4fe5-d132-28f8-3d8c259efcc6",
-            "name": "PRACTICE",
+            "name": "Shooting Range",
             "path": "ShooterGame/Content/GameModes/ShootingRange/ShootingRangeGameMode_PrimaryAsset"
         },
         "57038d6d-49b1-3a74-c5ef-3395d9f23a97": {
@@ -207,6 +207,7 @@
         }
     },
     "mode_path_to_uuid": {
+        "/Game/GameModes/ShootingRange/ShootingRangeGameMode.ShootingRangeGameMode_C": "e2dc3878-4fe5-d132-28f8-3d8c259efcc6",
         "/Game/GameModes/Bomb/BombGameMode.BombGameMode_C": "96bd3920-4f36-d026-2b28-c683eb0bcac5",
         "/Game/GameModes/QuickBomb/QuickBombGameMode.QuickBombGameMode_C": "e921d1e6-416b-c31f-1291-74930c330b7b",
         "/Game/GameModes/Deathmatch/DeathmatchGameMode.DeathmatchGameMode_C": "a8790ec5-4237-f2f0-e93b-08a8e89865b2",

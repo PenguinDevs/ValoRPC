@@ -53,6 +53,9 @@ class AssetsManager():
       new_entry['name'] = data['displayName']
       new_entry['path'] = data['assetPath']
 
+      if new_entry['name'] == 'PRACTICE':
+         new_entry['name'] = 'Shooting Range'
+
       self.assets['modes'][data['uuid']] = new_entry
       self.assets['mode_path_to_uuid'][new_entry['path']] = data['uuid']
 
