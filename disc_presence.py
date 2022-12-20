@@ -15,7 +15,7 @@ class Presence:
       self._prev_status = {}
 
    def update(self, status: str) -> None:
-      status['buttons'] = [{'label': 'Coming soon :)', 'url': 'https://valotracker.com'}]
+      status['buttons'] = [{'label': 'Download from GitHub', 'url': 'https://github.com/PenguinDevs/ValoRPC/releases'}]
       self.status = status
       self.__check_changed()
 
