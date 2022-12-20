@@ -1,0 +1,50 @@
+{
+   "MatchID": "032c2606-a676-4d46-baef-af377657a3e7",
+   "Version": 1671023352394,
+   "State": "IN_PROGRESS",
+   "MapID": "/Game/Maps/Ascent/Ascent",
+   "ModeID": "/Game/GameModes/Bomb/BombGameMode.BombGameMode_C",
+   "ProvisioningFlow": "CustomGame",
+   "GamePodID": "aresriot.aws-apse2-prod.ap-gp-sydney-1",
+   "AllMUCName": "032c2606-a676-4d46-baef-af377657a3e7-all@ares-coregame.jp1.pvp.net",
+   "TeamMUCName": "032c2606-a676-4d46-baef-af377657a3e7-blue@ares-coregame.jp1.pvp.net",
+   "TeamVoiceID": "032c2606-a676-4d46-baef-af377657a3e7-tm1",
+   "IsReconnectable": false,
+   "ConnectionDetails": {
+      "GameServerHosts": [
+         "43.229.65.1"
+      ],
+      "GameServerHost": "43.229.65.1",
+      "GameServerPort": 7177,
+      "GameServerObfuscatedIP": 791869914,
+      "GameClientHash": 2407850607,
+      "PlayerKey": "Vy+7mwQe/D7plK9O/L4wrEOyxqJ5M7WdpXehRdISMe/iI7g7CnRhCEgCrAmDgXmRVpyTSLjOMNXdhDvnVro+GQ=="
+   },
+   "PostGameDetails": null,
+   "Players": [
+      {
+         "Subject": "db286b6d-c38f-5801-b861-afdf5b6002e9",
+         "TeamID": "Blue",
+         "CharacterID": "95b78ed7-4637-86d9-7e41-71ba8c293152",
+         "PlayerIdentity": {
+            "Subject": "db286b6d-c38f-5801-b861-afdf5b6002e9",
+            "PlayerCardID": "0e28a9b5-4a9a-bf7d-b4a1-9b8395461b77",
+            "PlayerTitleID": "77b12d01-4209-6b61-16aa-23a7382ae17b",
+            "AccountLevel": 131,
+            "PreferredLevelBorderID": "ebc736cd-4b6a-137b-e2b0-1486e31312c9",
+            "Incognito": false,
+            "HideAccountLevel": true
+         },
+         "SeasonalBadgeInfo": {
+            "SeasonID": "",
+            "NumberOfWins": 0,
+            "WinsByTier": null,
+            "Rank": 0,
+            "LeaderboardRank": 0
+         },
+         "IsCoach": false,
+         "IsAssociated": true
+      }
+   ],
+   "MatchmakingData": null
+}

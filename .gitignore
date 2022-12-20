@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Builds
+build
+dist
+vrpc.spec
+
+# OCR Training Data
+# valorant_scoreboard_training/ocrd-testset_combined
+# valorant_scoreboard_training/ocrd-testset_1
+# valorant_scoreboard_training/ocrd-testset_2
+# valorant_scoreboard_training/ocrd-testset_3
+# valorant_scoreboard_training/data
+
+# Tesseract OCR
+Tesseract-OCR/*
+!Tesseract-OCR/tessdata
