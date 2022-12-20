@@ -20,7 +20,7 @@ from thread import Thread
 
 
 class VRPCClient:
-   def __init__(self) -> None:
+   def __init__(self, presence: Presence) -> None:
       self.score_reader = TopBarReader(False, False, path.abspath(path.join(path.dirname(__file__), "Tesseract-OCR/tesseract.exe")))
       self.screen_reader = ScreenReader(self.score_reader)
 
@@ -36,8 +36,8 @@ class VRPCClient:
 
       self.assets_manager = AssetsManager()
       self.assets_manager.bulk_download_all_assets()
-
-      self.presence = Presence()
+      
+      self.presence = presence
 
       self.websocket = WebsocketListener(self)
 
@@ -56,11 +56,13 @@ if __name__ == '__main__':
    # loop. :(
    nest_asyncio.apply()
 
-   presence_event_loop = asyncio.new_event_loop()
+   asyncio_loop = asyncio.new_event_loop()
+   presence = None
+   thread = None
 
-   def vrpc_loop() -> None:
-      asyncio.set_event_loop(presence_event_loop)
-      client = VRPCClient()
+   def vrpc_loop(presence: Presence) -> None:
+      asyncio.set_event_loop(asyncio_loop)
+      client = VRPCClient(presence)
       client.loop()
 
    def process_exists(process_name: str) -> bool:
@@ -74,16 +76,16 @@ if __name__ == '__main__':
    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
       print('Hiding this window in 5 seconds.')
       time.sleep(5)
-      ctypes.windll.user32.ShowWindow( ctypes.windll.kernel32.GetConsoleWindow(), 6 )
-
-   thread = None
+      ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
 
    while True:
       if process_exists('VALORANT'):
          if not thread:
             print('vrpc started')
             try:
-               thread = Thread(vrpc_loop)
+               presence = Presence()
+
+               thread = Thread(target=vrpc_loop, args=(presence,))
                thread.start()
             except:
                print('vrpc closed when attempting to start')
@@ -91,6 +93,7 @@ if __name__ == '__main__':
          if thread:
             thread.terminate()
             thread = None
+            presence.client.close()
             print('vrpc ended')
 
       time.sleep(8)
