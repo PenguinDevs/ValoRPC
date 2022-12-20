@@ -8,6 +8,8 @@ dist
 vrpc.spec
 
 # OCR Training Data
+valorant_scoreboard_training/*.box
+valorant_scoreboard_training/*.lstmf
 # valorant_scoreboard_training/ocrd-testset_combined
 # valorant_scoreboard_training/ocrd-testset_1
 # valorant_scoreboard_training/ocrd-testset_2
