@@ -5,6 +5,7 @@ __pycache__/
 # Builds
 build
 dist
+vrpc.spec
 
 # OCR Training Data
 valorant_scoreboard_training/*.box
