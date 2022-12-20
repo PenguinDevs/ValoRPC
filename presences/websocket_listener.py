@@ -75,4 +75,3 @@ class WebsocketListener():
                   self.check_presence()
       except Exception as e:
          print(e)
-         self.vrpc_client.presence.client.close()
