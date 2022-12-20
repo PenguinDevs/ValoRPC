@@ -2,8 +2,8 @@ import threading
 import ctypes
   
 class Thread(threading.Thread):
-    def __init__(self, target: object) -> None:
-        super().__init__(target=target, daemon=True)
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs, daemon=True)
           
     def get_id(self) -> None:
         if hasattr(self, '_thread_id'):
