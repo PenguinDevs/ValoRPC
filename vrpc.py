@@ -3,6 +3,9 @@ import json
 import subprocess
 import time
 import regex
+import ctypes
+import sys
+from tendo.singleton import SingleInstance
 from os import path
 
 import nest_asyncio
@@ -47,6 +50,8 @@ class VRPCClient:
 
 
 if __name__ == '__main__':
+   SingleInstance()
+
    # required for stupid pypresence to work inside an already existing asyncio
    # loop. :(
    nest_asyncio.apply()
@@ -64,6 +69,12 @@ if __name__ == '__main__':
          return True
       else:
          return False
+
+   print('ValoRPC - Valorant Rich Presence for Discord is active!')
+   if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+      print('Hiding this window in 5 seconds.')
+      time.sleep(5)
+      ctypes.windll.user32.ShowWindow( ctypes.windll.kernel32.GetConsoleWindow(), 6 )
 
    thread = None
 
