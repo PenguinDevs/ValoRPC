@@ -1,1 +1,1 @@
-pyinstaller vrpc.py --onefile --add-data "assets/val_assets.json;assets"
+pyinstaller vrpc.py --onefile --add-data "assets/val_assets.json;assets" --add-data "Tesseract-OCR;Tesseract-OCR"

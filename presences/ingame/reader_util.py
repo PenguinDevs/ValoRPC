@@ -15,8 +15,6 @@ from .pixel_list import (buy_phase_bwpixel_list, match_point_bwpixel_list,
                          match_point_ot_pixel_list, round_lost_bwpixel_list,
                          round_won_bwpixel_list, ot_pixel_list, endgame_pixel_list)
 
-pytesseract.pytesseract.tesseract_cmd = os.path.abspath("Tesseract-OCR/tesseract.exe")
-
 user32 = ctypes.windll.user32
 screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
@@ -61,9 +59,10 @@ timer_tes_config = (
 window_y = -500
 
 class TopBarReader():
-   def __init__(self, record: bool, debug: bool) -> None:
+   def __init__(self, record: bool, debug: bool, tess_path: str) -> None:
       self.record = record
       self.debug = debug
+      pytesseract.pytesseract.tesseract_cmd = tess_path
 
    def record_frame(self, print_screen: Image.Image) -> t.Tuple[t.Tuple[int, int], t.Tuple[int, int, int], str]:
       scores = self.get_scores(print_screen)

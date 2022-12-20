@@ -3,6 +3,7 @@ import json
 import subprocess
 import time
 import regex
+from os import path
 
 import nest_asyncio
 
@@ -17,7 +18,7 @@ from thread import Thread
 
 class VRPCClient:
    def __init__(self) -> None:
-      self.score_reader = TopBarReader(False, False)
+      self.score_reader = TopBarReader(False, False, path.abspath(path.join(path.dirname(__file__), "Tesseract-OCR/tesseract.exe")))
       self.screen_reader = ScreenReader(self.score_reader)
 
       self.riot_client = RiotClient()
@@ -48,24 +49,6 @@ class VRPCClient:
 if __name__ == '__main__':
    # required for stupid pypresence to work inside an already existing asyncio
    # loop. :(
-
-   import os
-
-   # folder path
-   dir_path = '.'
-
-   # list to store files
-
-   # Iterate directory
-   for path in os.listdir(dir_path):
-      # check if current path is a file
-      if os.path.isfile(os.path.join(dir_path, path)):
-         print(path)
-      else:
-         print(path)
-         for path2 in os.listdir(dir_path):
-            print(f'{path}/{path2}')
-
    nest_asyncio.apply()
 
    presence_event_loop = asyncio.new_event_loop()
