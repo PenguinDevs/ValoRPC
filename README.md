@@ -28,10 +28,6 @@ Note that windows will by default block the application from running, responding
 
 If you trust that my project is free from malware, go ahead and click 'more info' and then 'Run anyways'.
 
-If you want to automatically start the app on startup, press Windows key + R key and type `shell:startup`, then press 'ok' and drag the .exe file into the folder that is shown.
-![step 1](https://i.imgur.com/CQ7mkZk.png)
-![step 2](https://i.imgur.com/mqPKKYs.png)
-
 ## Acknowledgements
 
  - [Colinhartigan's Python Valclient](https://github.com/colinhartigan/valclient.py)
