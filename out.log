@@ -1,0 +1,51 @@
+2022-12-21 18:10:20,196:DEBUG:asyncio:Using proactor: IocpProactor
+2022-12-21 18:10:20,217:INFO:root:ValoRPC - Valorant Rich Presence for Discord is active!
+2022-12-21 18:10:20,217:INFO:root:
+
+2022-12-21 18:10:20,217:INFO:root:1
+2022-12-21 18:10:20,217:INFO:root:
+
+2022-12-21 18:10:20,217:INFO:root:aaaa
+2022-12-21 18:10:20,217:INFO:root:
+
+2022-12-21 18:10:20,417:INFO:root:vrpc started
+2022-12-21 18:10:20,417:INFO:root:
+
+2022-12-21 18:10:20,699:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): 127.0.0.1:3344
+2022-12-21 18:10:20,722:DEBUG:urllib3.connectionpool:https://127.0.0.1:3344 "GET /entitlements/v1/token HTTP/1.1" 200 1769
+2022-12-21 18:10:20,724:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): valorant-api.com:443
+2022-12-21 18:10:20,801:DEBUG:urllib3.connectionpool:https://valorant-api.com:443 "GET /v1/version HTTP/1.1" 200 None
+2022-12-21 18:10:20,804:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): 127.0.0.1:3344
+2022-12-21 18:10:20,839:DEBUG:urllib3.connectionpool:https://127.0.0.1:3344 "GET /chat/v1/session HTTP/1.1" 200 267
+2022-12-21 18:10:20,842:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): 127.0.0.1:3344
+2022-12-21 18:10:20,861:DEBUG:urllib3.connectionpool:https://127.0.0.1:3344 "GET /product-session/v1/external-sessions HTTP/1.1" 200 2776
+2022-12-21 18:10:20,864:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): 127.0.0.1:3344
+2022-12-21 18:10:20,884:DEBUG:urllib3.connectionpool:https://127.0.0.1:3344 "GET /product-session/v1/external-sessions HTTP/1.1" 200 2776
+2022-12-21 18:10:20,890:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): valorant-api.com:443
+2022-12-21 18:10:20,970:DEBUG:urllib3.connectionpool:https://valorant-api.com:443 "GET /v1/agents HTTP/1.1" 200 None
+2022-12-21 18:10:20,974:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): valorant-api.com:443
+2022-12-21 18:10:21,048:DEBUG:urllib3.connectionpool:https://valorant-api.com:443 "GET /v1/maps HTTP/1.1" 200 None
+2022-12-21 18:10:21,051:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): valorant-api.com:443
+2022-12-21 18:10:21,108:DEBUG:urllib3.connectionpool:https://valorant-api.com:443 "GET /v1/gamemodes HTTP/1.1" 200 None
+2022-12-21 18:10:21,127:DEBUG:websockets.client:= connection is CONNECTING
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> GET / HTTP/1.1
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Host: 127.0.0.1:3344
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Upgrade: websocket
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Connection: Upgrade
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Sec-WebSocket-Key: Ed3/NcDyZnksZ/d3/RPUmA==
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Sec-WebSocket-Version: 13
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> Authorization: Basic cmlvdDpMUHkzSjc0YkJIQ1N3alhHM1VsZE5n
+2022-12-21 18:10:21,137:DEBUG:websockets.client:> User-Agent: Python/3.10 websockets/10.4
+2022-12-21 18:10:21,139:DEBUG:websockets.client:< HTTP/1.1 101 Switching Protocols
+2022-12-21 18:10:21,139:DEBUG:websockets.client:< Upgrade: websocket
+2022-12-21 18:10:21,139:DEBUG:websockets.client:< Connection: Upgrade
+2022-12-21 18:10:21,139:DEBUG:websockets.client:< Sec-WebSocket-Accept: WGzGa8t+fMot3SeHuNxbwJewbGY=
+2022-12-21 18:10:21,139:DEBUG:websockets.client:= connection is OPEN
+2022-12-21 18:10:21,139:DEBUG:websockets.client:> TEXT '[5, "OnJsonApiEvent"]' [21 bytes]
+2022-12-21 18:10:21,140:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): 127.0.0.1:3344
+2022-12-21 18:10:21,185:DEBUG:urllib3.connectionpool:https://127.0.0.1:3344 "GET /chat/v4/presences HTTP/1.1" 200 10929
+2022-12-21 18:10:21,187:DEBUG:websockets.client:< TEXT '' [0 bytes]
+2022-12-21 18:10:21,190:INFO:root:updated status
+2022-12-21 18:10:21,190:INFO:root:
+

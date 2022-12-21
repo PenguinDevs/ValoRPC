@@ -8,6 +8,9 @@ import base64
 import urllib3
 import json
 import typing as t
+import logging
+
+logger = logging.getLogger(__name__)
 
 # imports for modules used in the package
 from .resources import regions
@@ -1083,7 +1086,7 @@ class Client:
             return puuid, headers, None
 
         except Exception as e:
-            print(e)
+            logger.error(e)
             raise HandshakeError('Unable to get headers; is VALORANT running?')
 
     def __get_auth_headers(self): # headers for pd/glz endpoints

@@ -1,5 +1,8 @@
 import pypresence
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 client_id = 721690501379522600
 
@@ -26,7 +29,7 @@ class Presence:
             self._prev_status = self.status.copy()
             self.client.update(**self.status)
             self._last_updated = time_now
-            print('updated status')
+            logger.info('updated status')
 
 
 if __name__ == '__main__':

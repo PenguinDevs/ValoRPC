@@ -3,6 +3,9 @@
 import ctypes
 from datetime import datetime
 import typing as t
+import logging
+
+logger = logging.getLogger(__name__)
 
 import cv2
 import numpy as np
@@ -283,7 +286,7 @@ class TopBarReader():
             f.write(text)
          image.save(f'{path}/{name}.png')
 
-         print('recorded', name)
+         logger.info('recorded', name)
 
       for key, text in recording_key_presses_to_text.items():
          if win32api.GetKeyState(key) < 0:
@@ -356,4 +359,4 @@ if __name__ == '__main__':
    while True:
       print_screen = screen_reader.capture_screen()
       screen_reader.display_screen(print_screen)
-      print(screen_reader.score_reader.record_frame(print_screen))
+      logger.info(screen_reader.score_reader.record_frame(print_screen))

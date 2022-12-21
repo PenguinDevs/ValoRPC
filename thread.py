@@ -1,6 +1,9 @@
 import threading
 import ctypes
-  
+import logging
+
+logger = logging.getLogger(__name__)
+
 class Thread(threading.Thread):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs, daemon=True)
@@ -20,5 +23,4 @@ class Thread(threading.Thread):
               ctypes.py_object(SystemExit))
         if res > 1:
             ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-            print('Exception raise failure')
-            
+            logger.warn('Exception raise failure')

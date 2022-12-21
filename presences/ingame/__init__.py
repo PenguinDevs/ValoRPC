@@ -1,5 +1,8 @@
 import time
 import typing as t
+import logging
+
+logger = logging.getLogger(__name__)
 
 from ..presence import BasePresence
 
@@ -119,7 +122,7 @@ class IngamePresence(BasePresence):
                self.vrpc_client.screen_reader.display_screen(print_screen)
 
             results = self.vrpc_client.screen_reader.score_reader.record_frame(print_screen)
-            print(results)
+            logger.debug(results)
             scores, timer, state = results
 
             match_refreshed, match_active = self.__get_match_info(match_id)

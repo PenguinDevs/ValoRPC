@@ -1,25 +1,40 @@
 import requests
 import json
-from os import path
+import os
 
 EMPTY_ASSETS = {
    'agents': {},
    'maps': {},
    'map_urls_to_uuid': {},
    'modes': {},
-   'mode_path_to_uuid': {}
+   'mode_path_to_uuid': {
+      '/Game/GameModes/ShootingRange/ShootingRangeGameMode.ShootingRangeGameMode_C': 'e2dc3878-4fe5-d132-28f8-3d8c259efcc6',
+      '/Game/GameModes/Bomb/BombGameMode.BombGameMode_C': '96bd3920-4f36-d026-2b28-c683eb0bcac5',
+      '/Game/GameModes/QuickBomb/QuickBombGameMode.QuickBombGameMode_C': 'e921d1e6-416b-c31f-1291-74930c330b7b',
+      '/Game/GameModes/Deathmatch/DeathmatchGameMode.DeathmatchGameMode_C': 'a8790ec5-4237-f2f0-e93b-08a8e89865b2',
+      '/Game/GameModes/GunGame/GunGameTeamsGameMode.GunGameTeamsGameMode_C': 'a4ed6518-4741-6dcb-35bd-f884aecdc859',
+      '/Game/GameModes/OneForAll/OneForAll_GameMode.OneForAll_GameMode_C': '4744698a-4513-dc96-9c22-a9aa437e4a58',
+      '/Game/GameModes/_Development/Swiftplay_EndOfRoundCredits/Swiftplay_EoRCredits_GameMode.Swiftplay_EoRCredits_GameMode_C': '5d0f264b-4ebe-cc63-c147-809e1374484b',
+   }
 }
 
 class AssetsManager():
-   def __init__(self) -> None:
-      self.assets_dir = path.abspath(path.join(path.dirname(__file__), 'val_assets.json')) # 'assets/val_assets.json'
+   def __init__(self, appdata_path: str) -> None:
+      # self.assets_dir = path.abspath(path.join(path.dirname(__file__), 'val_assets.json')) # 'assets/val_assets.json'
+      self.assets_folder = os.path.join(appdata_path, 'assets')
+      if not os.path.exists(self.assets_folder):
+         os.makedirs(self.assets_folder)
+      self.assets_dir = os.path.join(self.assets_folder, 'val_assets.json') # 'assets/val_assets.json'
 
       self.assets = EMPTY_ASSETS
       self.read_assets()
 
    def read_assets(self) -> dict:
-      with open(self.assets_dir, mode='r') as f:
-         self.assets = json.load(f)
+      with open(self.assets_dir, mode='w+') as f:
+         if f.read() == '':
+            self.assets = EMPTY_ASSETS
+         else:
+            self.assets = json.load(f)
 
          return self.assets
 

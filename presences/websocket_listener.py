@@ -1,6 +1,10 @@
 import ssl
 import json
 import time
+import traceback
+import logging
+
+logger = logging.getLogger(__name__)
 
 import websockets
 
@@ -67,11 +71,12 @@ class WebsocketListener():
                data = response['data']
 
                uri_to_presence = self.events_to_presence[response['eventType']]
-               # print(response['eventType'], response['uri'])
+               logger.debug(f'{response["eventType"]} - {response["uri"]}')
                if response['uri'] in uri_to_presence.keys():
                   uri_to_presence[response['uri']].start_with_event_data(data)
 
                if (time.time() - self.presence_last_fetched) >= 5:
                   self.check_presence()
-      except Exception as e:
-         print(e)
+      except Exception:
+         logger.warn('Exception during listening to webhook connection')
+         logger.error(traceback.format_exc())

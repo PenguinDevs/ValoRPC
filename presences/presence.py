@@ -1,4 +1,7 @@
 import regex
+import logging
+
+logger = logging.getLogger(__name__)
 
 cached_match_ids = []
 
@@ -19,7 +22,7 @@ class BasePresence():
 
       if not match_key in cached_match_ids:
          cached_match_ids.append(match_key)
-         print('FOUND MATCH', match_id)
+         logger.info('FOUND MATCH', match_id)
 
          return match_id
 
