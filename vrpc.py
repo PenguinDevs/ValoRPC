@@ -118,7 +118,7 @@ class VRPCMaster:
             #    self.logger.info('vrpc ended')
             pass
 
-         time.sleep(2)
+         time.sleep(8)
 
    def client_loop(self, presence: Presence) -> None:
       # asyncio.set_event_loop(self.asyncio_loop)
