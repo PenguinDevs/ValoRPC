@@ -1,11 +1,10 @@
 import asyncio
 import json
-import subprocess
 import time
 import regex
 import ctypes
 import sys
-from tendo.singleton import SingleInstance
+import psutil
 from os import path
 
 import nest_asyncio
@@ -50,10 +49,8 @@ class VRPCClient:
 
 
 if __name__ == '__main__':
-   SingleInstance()
-
-   # required for stupid pypresence to work inside an already existing asyncio
-   # loop. :(
+   # # required for stupid pypresence to work inside an already existing asyncio
+   # # loop. :(
    nest_asyncio.apply()
 
    asyncio_loop = asyncio.new_event_loop()
@@ -66,8 +63,13 @@ if __name__ == '__main__':
       client.loop()
 
    def process_exists(process_name: str) -> bool:
-      progs = str(subprocess.check_output('tasklist'))
-      if process_name in progs:
+      # This method flashes window when running py in no console mode
+      # progs = str(subprocess.check_output('tasklist'))
+      # if process_name in progs:
+      #    return True
+      # else:
+      #    return False
+      if process_name in (p.name() for p in psutil.process_iter()):
          return True
       else:
          return False
@@ -79,7 +81,7 @@ if __name__ == '__main__':
       ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
 
    while True:
-      if process_exists('VALORANT'):
+      if process_exists('VALORANT.exe'):
          if not thread:
             print('vrpc started')
             try:
