@@ -31,6 +31,7 @@ class IngamePresence(BasePresence):
          return
 
       self._register_match_id(match_details['MatchID'], 'ingame')
+      logger.info('CONTINUING CORE MATCH', match_id)
 
       _, mode = self.vrpc_client.assets_manager.get_mode_from_url(match_details['ModeID'])
       self.__loop(match_details['MatchID'], mode['name'])

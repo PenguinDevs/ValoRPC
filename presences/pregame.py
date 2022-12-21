@@ -1,4 +1,7 @@
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 from .presence import BasePresence
 
@@ -23,6 +26,7 @@ class PregamePresence(BasePresence):
          return
 
       self._register_match_id(match_details['ID'], 'pregame')
+      logger.info('CONTINUING PRE MATCH', match_id)
       
       self.__loop(match_id)
 

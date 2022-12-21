@@ -78,7 +78,6 @@ class VRPCMaster:
 
       self.check_startup_shortcut()
       # self.check_program_shortcut()
-
       self.logger.info('ValoRPC - Valorant Rich Presence for Discord is active!')
       # if self.is_frozen():
       #    self.logger.info('Hiding this window in 5 seconds.')
