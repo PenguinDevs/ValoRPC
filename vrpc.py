@@ -18,6 +18,7 @@ from pathlib import Path
 
 import nest_asyncio
 
+from versioning import VersioningHandler
 from sys_tray import SystemTrayApp
 from assets.assets_manager import AssetsManager
 from disc_presence import Presence
@@ -69,6 +70,9 @@ class VRPCMaster:
       elif __file__:
          self.application_path = os.path.dirname(__file__)
 
+      with open(os.path.join(self.application_path, 'info.json'), mode='r') as f:
+         self.info = json.load(f)
+
       self.presence = None
       # self.client_thread = None
       self.asyncio_loop = asyncio.new_event_loop()
@@ -78,7 +82,13 @@ class VRPCMaster:
 
       self.check_startup_shortcut()
       # self.check_program_shortcut()
-      self.logger.info('ValoRPC - Valorant Rich Presence for Discord is active!')
+
+      self.versioning_handler = VersioningHandler(self.info['version'], self.info['git_repo'], self.appdata_path, self.application_path)
+      self.versioning_handler.check_update()
+
+      self.logger.info(f'ValoRPC {self.info["version"]} - Valorant Rich Presence for Discord is running!')
+      if not '--nonotif' in sys.argv:
+         self.system_tray_app.win_notify(f'ValoRPC {self.info["version"]} is running!', 'Discord rich presence will be automatically shown on your profile whenever the Valorant application is running.')
       # if self.is_frozen():
       #    self.logger.info('Hiding this window in 5 seconds.')
       #    time.sleep(5)
@@ -90,12 +100,30 @@ class VRPCMaster:
 
    def loop(self) -> None:
       asyncio.set_event_loop(self.asyncio_loop)
-
+      # # required for stupid pypresence to work inside an already existing asyncio
+      # # loop. :(
+      nest_asyncio.apply(self.asyncio_loop)
+      
       while True:
-         # # required for stupid pypresence to work inside an already existing asyncio
-         # # loop. :(
-         nest_asyncio.apply(self.asyncio_loop)
-         if self.process_exists('VALORANT.exe'):
+         processes = [] # (p.name() for p in psutil.process_iter())
+         installers_count = 0 # len([p for p in processes if (('ValoRPC' in p) and ('installer' in p))])
+         valorant_exists = False
+
+         for p in psutil.process_iter():
+            name = p.name()
+            processes.append(name)
+            if 'VALORANT.exe' == name:
+               valorant_exists = True
+            elif ('ValoRPC' in name) and ('installer' in name):
+               installers_count += 1
+            
+            if valorant_exists and installers_count > 0:
+               break
+
+         if installers_count > 0:
+            self.system_tray_app.win_notify('ValoRPC Installer Detected!', f'ValoRPC {self.info["version"]} has exited as it was running in the background whilst the installer was open.')
+            os.system('taskkill /IM ValoRPC.exe')
+         elif valorant_exists: # self.process_exists('VALORANT.exe'):
             # if not self.client_thread:
             self.logger.info('vrpc started')
             try:
@@ -107,7 +135,7 @@ class VRPCMaster:
                # self.client_thread = Thread(target=self.client_loop, args=(self.presence,))
                # self.client_thread.start()
             except Exception:
-               self.logger.warn('vrpc closed when attempting to start with exception:')
+               self.logger.warning('vrpc closed when attempting to start with exception:')
                self.logger.error(traceback.format_exc())
          else:
             # if self.client_thread:
@@ -117,7 +145,7 @@ class VRPCMaster:
             #    self.logger.info('vrpc ended')
             pass
 
-         time.sleep(8)
+         time.sleep(6)
 
    def client_loop(self, presence: Presence) -> None:
       # asyncio.set_event_loop(self.asyncio_loop)
@@ -151,7 +179,7 @@ class VRPCMaster:
          )
       else:
          logging.basicConfig(
-            level=logging.INFO,
+            level=logging.DEBUG,
             format='%(asctime)s:%(levelname)s:%(name)s:%(message)s',
          )
       self.logger = logging.getLogger()
@@ -189,17 +217,18 @@ class VRPCMaster:
       else:
          return False
 
-   def __create_shortcut(self, target: str) -> None:
+   def __create_shortcut(self, target: str, args: str = None) -> None:
       shell = win32com.client.Dispatch("WScript.Shell")
       shortcut = shell.CreateShortCut(target)
 
       shortcut.Targetpath = os.path.join(self.application_path, 'ValoRPC.exe')
       shortcut.IconLocation = os.path.join(self.application_path, 'favicon.ico')
+      shortcut.Arguments = args
       shortcut.save()
 
    def check_startup_shortcut(self) -> None:
       target = os.path.join(Path.home(), 'AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/ValoRPC.lnk')
-      self.__create_shortcut(target)
+      self.__create_shortcut(target, '--nonotif')
 
    def check_program_shortcut(self) -> None:
       target = os.path.join(Path.home(), 'AppData/Roaming/Microsoft/Windows/Start Menu/Programs/ValoRPC.lnk')
@@ -214,16 +243,9 @@ if __name__ == '__main__':
    handle = CreateMutex(None, 1, 'ValoRPC')
 
    if GetLastError() == ERROR_ALREADY_EXISTS:
-      while True:
-         response = ctypes.windll.user32.MessageBoxW(0, 'ValoRPC is already running!', 'ValoRPC', 0) # 5)
-         exit()
-         # if response == 2:
-         #    exit()
-         # elif response == 4:
-         #    handle = CreateMutex(None, 1, 'ValoRPC')
-         #    if not GetLastError() == ERROR_ALREADY_EXISTS:
-         #       break
-
-   vrpc_master = VRPCMaster()
-   vrpc_master.start_main_thread()
-   vrpc_master.system_tray_app.loop()
+      response = ctypes.windll.user32.MessageBoxW(0, 'ValoRPC is already running!', 'ValoRPC', 0) # 5)
+      sys.exit(0)
+   else:
+      vrpc_master = VRPCMaster()
+      vrpc_master.start_main_thread()
+      vrpc_master.system_tray_app.loop()

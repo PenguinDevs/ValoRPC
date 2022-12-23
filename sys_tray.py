@@ -42,7 +42,7 @@ class SystemTrayApp(object):
         self.default_menu_index = (default_menu_index or 0)
         self.window_class_name = window_class_name
         
-        message_map = {win32gui.RegisterWindowMessage("TaskbarCreated"): self.restart,
+        message_map = {win32gui.RegisterWindowMessage('TaskbarCreated'): self.restart,
                        win32con.WM_DESTROY: self.destroy,
                        win32con.WM_COMMAND: self.command,
                        win32con.WM_USER+20 : self.notify,}
@@ -99,15 +99,15 @@ class SystemTrayApp(object):
         hinst = win32gui.GetModuleHandle(None)
         if os.path.isfile(self.icon):
             icon_flags = win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE
-            hicon = win32gui.LoadImage(hinst,
+            self.hicon = win32gui.LoadImage(hinst,
                                        self.icon,
                                        win32con.IMAGE_ICON,
                                        0,
                                        0,
                                        icon_flags)
         else:
-            logging.warn("Can't find icon file - using default.")
-            hicon = win32gui.LoadIcon(0, win32con.IDI_APPLICATION)
+            logging.warning('Can\'t find icon file - using default.')
+            self.hicon = win32gui.LoadIcon(0, win32con.IDI_APPLICATION)
 
         if self.notify_id: message = win32gui.NIM_MODIFY
         else: message = win32gui.NIM_ADD
@@ -115,7 +115,7 @@ class SystemTrayApp(object):
                           0,
                           win32gui.NIF_ICON | win32gui.NIF_MESSAGE | win32gui.NIF_TIP,
                           win32con.WM_USER+20,
-                          hicon,
+                          self.hicon,
                           self.hover_text)
         win32gui.Shell_NotifyIcon(message, self.notify_id)
 
@@ -181,7 +181,7 @@ class SystemTrayApp(object):
         # First load the icon.
         ico_x = win32api.GetSystemMetrics(win32con.SM_CXSMICON)
         ico_y = win32api.GetSystemMetrics(win32con.SM_CYSMICON)
-        hicon = win32gui.LoadImage(0, icon, win32con.IMAGE_ICON, ico_x, ico_y, win32con.LR_LOADFROMFILE)
+        self.hicon = win32gui.LoadImage(0, icon, win32con.IMAGE_ICON, ico_x, ico_y, win32con.LR_LOADFROMFILE)
 
         hdcBitmap = win32gui.CreateCompatibleDC(0)
         hdcScreen = win32gui.GetDC(0)
@@ -194,7 +194,7 @@ class SystemTrayApp(object):
         # "GetSysColorBrush returns a cached brush instead of allocating a new
         # one." - implies no DeleteObject
         # draw the icon
-        win32gui.DrawIconEx(hdcBitmap, 0, 0, hicon, ico_x, ico_y, 0, 0, win32con.DI_NORMAL)
+        win32gui.DrawIconEx(hdcBitmap, 0, 0, self.hicon, ico_x, ico_y, 0, 0, win32con.DI_NORMAL)
         win32gui.SelectObject(hdcBitmap, hbmOld)
         win32gui.DeleteDC(hdcBitmap)
         
@@ -212,6 +212,11 @@ class SystemTrayApp(object):
             win32gui.DestroyWindow(self.hwnd)
         else:
             menu_action(self)
+
+    def win_notify(self, title: str, desc: str) -> None:
+        win32gui.Shell_NotifyIcon(win32gui.NIM_MODIFY, \
+                                  (self.hwnd, 0, win32gui.NIF_INFO, win32con.WM_USER+20,\
+                                  self.hicon, 'Windows balloontip',desc,200,title))
             
 def non_string_iterable(obj: any) -> bool:
     try:

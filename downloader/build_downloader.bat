@@ -1,0 +1,1 @@
+pyinstaller web_downloader.py --onefile --name="ValoRPC Web Downloader" --noconfirm --icon=favicon.ico

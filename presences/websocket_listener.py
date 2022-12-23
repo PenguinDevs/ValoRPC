@@ -78,5 +78,5 @@ class WebsocketListener():
                if (time.time() - self.presence_last_fetched) >= 5:
                   self.check_presence()
       except Exception:
-         logger.warn('Exception during listening to webhook connection')
+         logger.warning('Exception during listening to webhook connection')
          logger.error(traceback.format_exc())
