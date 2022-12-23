@@ -22,9 +22,9 @@ As this program heavily relies on its screen reading ability, it has not been ye
 
 ## Installation
 
-Download the exe file from the [latest release](https://github.com/PenguinDevs/ValoRPC/releases) and then run the file.
+Download the exe file from the [latest release](https://github.com/PenguinDevs/ValoRPC/releases/latest) and then run the file.
 
-Note that windows will by default block the application from running, responding with a message 'Microsoft Defender SmartScreen prevented an unrecognized app from starting...' This is because the application is unsigned like many other open source executables out there on the internet. This project is therefore open source for not only contributions/forks, but for you to trust the source code of this application-- although the code is indeed arguably quite a mess :P
+Note that windows will by default block the application from running, responding with a message 'Microsoft Defender SmartScreen prevented an unrecognized app from starting...' This is because the application is unsigned like many other open source executables out there on the internet. This project is therefore open source for not only contributions/forks, but for you to trust the source code of this application-- although the code is indeed arguably quite a mess.
 
 If you trust that my project is free from malware, go ahead and click 'more info' and then 'Run anyways'.
 
