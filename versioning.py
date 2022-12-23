@@ -5,6 +5,7 @@ import traceback
 import logging
 import ctypes
 import sys
+import shutil
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +16,7 @@ class VersioningHandler:
       self.latest_endpoint = f'https://api.github.com/repos/{self.git_repo}/releases/latest'
       self.appdata_path = appdata_path
       self.application_path = application_path
+      self.installers_path = os.path.join(self.appdata_path, 'installers\\')
       
       self.current_tupled_version = self.version_to_tuple(self.current_version)
 
@@ -41,26 +43,33 @@ class VersioningHandler:
                return
          elif latest_version != self.current_version:
             logger.warning(f'A different version of ValoRPC was found {latest_version}, currently {self.current_version}')
+            self.__delete_installer_dir()
          else:
             logger.info('ValoRPC is already updated to the latest')
-
+            self.__delete_installer_dir()
       except SystemExit:
          sys.exit(0)
       except:
          logger.warning('Something went wrong when attempting to check for updates')
          logger.error(traceback.format_exc())
 
+   def __delete_installer_dir(self):
+      if os.path.exists(self.installers_path):
+         logger.info(f'Deleting {self.installers_path}')
+         shutil.rmtree(self.installers_path)
+      else:
+         logger.info(f'Attempted to delete {self.installers_path} but did not exist, skipping...')
+
    def __run_installer(self, web_response: dict) -> None:
       latest_version = web_response['tag_name']
 
-      installers_path = os.path.join(self.appdata_path, 'installers\\')
-      if not os.path.exists(installers_path):
-         os.makedirs(installers_path)
+      if not os.path.exists(self.installers_path):
+         os.makedirs(self.installers_path)
 
       installer_file = None
 
-      for file_name in os.listdir(installers_path):
-         f = os.path.abspath(os.path.join(installers_path, file_name))
+      for file_name in os.listdir(self.installers_path):
+         f = os.path.abspath(os.path.join(self.installers_path, file_name))
 
          if os.path.isfile(f):
             if latest_version in file_name:
@@ -70,8 +79,8 @@ class VersioningHandler:
 
       if not installer_file:
          asset = web_response['assets'][0]
-         installer_file = os.path.join(installers_path, asset['name'])
-         temp_file = os.path.join(installers_path, 'TEMP')
+         installer_file = os.path.join(self.installers_path, asset['name'])
+         temp_file = os.path.join(self.installers_path, 'TEMP')
          logging.debug('Downloading latest version')
          import subprocess
          # p = subprocess.Popen('start /wait cmd /C'.split() + [os.path.join(self.application_path, 'ValoRPC Web Downloader.exe'), asset['browser_download_url'], temp_file, installer_file], shell=True)
