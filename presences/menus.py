@@ -14,8 +14,10 @@ class MenusPresence(BasePresence):
                (presence_data['partyState'] == 'CUSTOM_GAME_SETUP' and 'Setting up Custom Game') or\
                'In Menus'
 
+      user_status = presence_data['isIdle'] == True and 'Idle' or 'Online'
+
       status = {}
-      status['details'] = f'{state}'
+      status['details'] = user_status == 'Idle' and user_status or f'{state}'
       if state == 'Setting up Custom Game':
          status['state'] = f'In Party'
       else:
@@ -27,6 +29,17 @@ class MenusPresence(BasePresence):
       status['large_text'] = 'ValoRPC'
       # status['small_image'] = 'home'
       # status['small_text'] = state
+      if user_status == 'Idle':
+         status['small_image'] = 'idle'
+         status['small_text'] = 'Idle'
+      elif queue_type == 'competitive':
+         competitive_data = self.vrpc_client.riot_client.fetch_competitive_updates()
+         latest_update = competitive_data['Matches'][0]
+         status['small_image'] = f'rank_{latest_update["TierAfterUpdate"]}'
+         if latest_update['TierAfterUpdate'] < 24:
+            status['small_text'] = f'Current MMR: {latest_update["RankedRatingAfterUpdate"]}/100'
+         else:
+            status['small_text'] = f'Current MMR: {latest_update["RankedRatingAfterUpdate"]}'
       
       status['party_size'] = party_info
 
