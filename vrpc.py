@@ -194,8 +194,9 @@ class VRPCMaster:
          [
             ('Logs', [
                ('View latest', self.view_latest_log),
-               ('Open folder', self.open_logs_folder)
-            ])
+               ('Open folder', self.open_logs_folder),
+            ]),
+            ('Reopen', self.reopen)
          ],
          'ValoRPC_Tray'
       )
@@ -238,6 +239,11 @@ class VRPCMaster:
       path = os.path.join(Path.home(), 'AppData\\Roaming\\PenguinDevs\\ValoRPC\\')
 
       self.appdata_path = path
+
+   def reopen(self, *args, **kwargs) -> None:
+      logging.info('Reopening ValoRPC...')
+      os.system(f'start {os.path.join(self.application_path, "ValoRPC.exe")}')
+      exit(0)
 
 if __name__ == '__main__':
    handle = CreateMutex(None, 1, 'ValoRPC')
