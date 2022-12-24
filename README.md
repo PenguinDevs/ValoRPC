@@ -20,6 +20,8 @@ Displays a fancy status under your Discord profile through Discord's rich presen
 ![Standard](https://i.imgur.com/xvllLWJ.png)
 ![Deathmatch](https://i.imgur.com/nOzcMHF.png)
 ![Deathmatch](https://i.imgur.com/3i1XQqh.png)
+![Competitive](https://i.imgur.com/v6CKH5Z.png)
+![Idling](https://i.imgur.com/TNmCBfK.png)
 
 ## Installation
 
