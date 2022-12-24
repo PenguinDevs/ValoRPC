@@ -7,7 +7,7 @@ Displays a fancy status under your Discord profile through Discord's rich presen
 
 ## NOTE
 
-- Please enable Discord settings -> Activity Settings -> Activity Privacy -> Display current activity as a status message. -> Enabled for any rich presences to be shown under your profile.
+- Please go to Discord settings -> Activity Settings -> Activity Privacy -> Display current activity as a status message. -> Enabled, for any rich presences to be shown under your profile.
 - As this program heavily relies on its screen reading ability, it has not been yet tested on any resolutions other than 1920x1080, 16:9 for Valorant windowed fullscreen/fullscreen. This means that this program cannot guarantee that it will function with screen resolutions of other than this tested size.
 
 ## Features
