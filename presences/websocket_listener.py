@@ -42,6 +42,8 @@ class WebsocketListener():
       if not presence:
          return
 
+      logger.debug(f'Presence session loop state: {presence["sessionLoopState"]}')
+
       if presence['sessionLoopState'] == 'MENUS':
          self.party_presence.update(presence)
       elif presence['sessionLoopState'] == 'PREGAME':

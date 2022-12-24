@@ -25,6 +25,7 @@ class Presence:
    def __check_changed(self) -> None:
       time_now = time.time()
       if (time_now - self._last_updated) >= 15:
+         logger.debug(f'Current presence is {self.status}')
          if self.status != self._prev_status:
             self._prev_status = self.status.copy()
             self.client.update(**self.status)

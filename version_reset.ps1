@@ -1,0 +1,1 @@
+wmic process where "name='ValoRPC.exe'" delete; Set-Content -Path "C:\Program Files (x86)\PenguinDevs\ValoRPC\info.json" -Value '{"author": "PenguinDevs", "description": "Discord Rich Presence for Valorant", "version": "v0.0.0-temp", "git_repo": "penguindevs/valorpc"}'; start "C:\Program Files (x86)\PenguinDevs\ValoRPC\ValoRPC.exe"; exit
