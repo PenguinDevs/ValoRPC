@@ -20,6 +20,7 @@ class MenusPresence(BasePresence):
       status['details'] = user_status == 'Idle' and user_status or f'{state}'
       if state == 'Setting up Custom Game':
          status['state'] = f'In Party'
+         queue_type = None
       else:
          queue_type =   (presence_data['queueId'] == 'ggteam' and 'escalation') or\
                         (presence_data['queueId'] == 'onefa' and 'replication') or\
