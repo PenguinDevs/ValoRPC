@@ -241,8 +241,10 @@ class VRPCMaster:
       self.appdata_path = path
 
    def reopen(self, *args, **kwargs) -> None:
-      logging.info('Reopening ValoRPC...')
-      os.system(f'start {os.path.join(self.application_path, "ValoRPC.exe")}')
+      path = os.path.join(self.application_path, "ValoRPC.exe")
+      delay = 5
+      logging.info(f'Reopening ValoRPC from {path} in {delay} seconds')
+      os.system(f'timeout /t {delay} & start {path}')
       exit(0)
 
 if __name__ == '__main__':
