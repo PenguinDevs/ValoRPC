@@ -38,9 +38,9 @@ class MenusPresence(BasePresence):
          latest_update = competitive_data['Matches'][0]
          status['small_image'] = f'rank_{latest_update["TierAfterUpdate"]}'
          if latest_update['TierAfterUpdate'] < 24:
-            status['small_text'] = f'Current MMR: {latest_update["RankedRatingAfterUpdate"]}/100'
+            status['small_text'] = f'Current RR: {latest_update["RankedRatingAfterUpdate"]}/100'
          else:
-            status['small_text'] = f'Current MMR: {latest_update["RankedRatingAfterUpdate"]}'
+            status['small_text'] = f'Current RR: {latest_update["RankedRatingAfterUpdate"]}'
       
       status['party_size'] = party_info
 
