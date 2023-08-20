@@ -22,7 +22,7 @@ class BasePresence():
 
       if not match_key in cached_match_ids:
          cached_match_ids.append(match_key)
-         logger.info('FOUND MATCH', match_id)
+         logger.info('FOUND MATCH %s', match_id)
 
          return match_id
 
