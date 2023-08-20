@@ -15,6 +15,7 @@ EMPTY_ASSETS = {
       '/Game/GameModes/GunGame/GunGameTeamsGameMode.GunGameTeamsGameMode_C': 'a4ed6518-4741-6dcb-35bd-f884aecdc859',
       '/Game/GameModes/OneForAll/OneForAll_GameMode.OneForAll_GameMode_C': '4744698a-4513-dc96-9c22-a9aa437e4a58',
       '/Game/GameModes/_Development/Swiftplay_EndOfRoundCredits/Swiftplay_EoRCredits_GameMode.Swiftplay_EoRCredits_GameMode_C': '5d0f264b-4ebe-cc63-c147-809e1374484b',
+      '/Game/GameModes/HURM/HURMGameMode.HURMGameMode_C': 'e086db66-47fd-e791-ca81-06a645ac7661'
    }
 }
 
