@@ -1,3 +1,4 @@
+⚠️ This project is now archived and any new pull requests or issues will not be reviewed. You are however, welcome to fork this repository.
 
 # ValoRPC
 
